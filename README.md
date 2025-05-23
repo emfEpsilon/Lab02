@@ -11,7 +11,6 @@ sequenceDiagram
 	opt
 		Client->>Server: POST /map <br> {"data":[ {…}, {…}, {…}, … ]}
 		Server->>Server: Validate Json
-		Server->>Server: Calculate Hash
 		Server->>MongoDB: Store json with hash
 		MongoDB-->>Server: map_id
 		Server-->>Client: 200 OK <br> {"map_id":1}

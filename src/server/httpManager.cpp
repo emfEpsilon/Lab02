@@ -249,9 +249,8 @@ void HttpManager::handleCircuit(const httplib::Request &req, httplib::Response &
         std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double, std::milli> dulation = end - start;
 
-        // Convert circuit from int to string to append in bsonCircuitResult
-        /*
-        std::vector<std::string> circuitString;
+        // 9. Convert circuit to BSON array
+        bsoncxx::builder::stream::array circuitBsonArray;
         for (int nodeId : circuit)
         {
             // Find the original string ID from the mapper
@@ -260,9 +259,9 @@ void HttpManager::handleCircuit(const httplib::Request &req, httplib::Response &
                                    { return pair.second == nodeId; });
             if (it != nodeIdMapper.end())
             {
-                circuitString.push_back(it->first);
+                circuitBsonArray << it->first; 
             }
-        }*/
+        }
 
         // 9. Prepare result json to store
         bsoncxx::builder::stream::document bsonCircuitResult;
@@ -270,7 +269,8 @@ void HttpManager::handleCircuit(const httplib::Request &req, httplib::Response &
             << "begin" << jsonBody["start"].get<std::string>()
             << "duration_ms" << dulation.count()
             << "timestamp" << bsoncxx::types::b_date(std::chrono::system_clock::now())
-            << "map_id" << jsonBody["map_id"].get<std::string>();
+            << "map_id" << jsonBody["map_id"].get<std::string>()
+            << "circuit" << circuitBsonArray;
 
         std::cout << "bsonCircuitResult: " << bsoncxx::to_json(bsonCircuitResult.view()) << std::endl;
 
@@ -298,6 +298,13 @@ void HttpManager::handleCircuit(const httplib::Request &req, httplib::Response &
     catch (const std::exception &e)
     {
         std::cerr << "Error: " << e.what() << std::endl;
+        res.status = 500;
+        res.set_content("{\"error\": \"Internal Server Error\"}", "application/json");
+        return;
+    }
+    catch (...)
+    {
+        std::cerr << "Error: Unknown error occurred" << std::endl;
         res.status = 500;
         res.set_content("{\"error\": \"Internal Server Error\"}", "application/json");
         return;

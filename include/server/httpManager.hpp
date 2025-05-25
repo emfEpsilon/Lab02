@@ -21,6 +21,7 @@
 #include "httplib.h"    
 #include "nlohmann/json.hpp"
 #include "bsoncxx/v_noabi/bsoncxx/json.hpp"
+#include "bsoncxx/v_noabi/bsoncxx/builder/stream/array.hpp"
 #include "maxFlowCalculator.hpp"
 #include "circuitCalculator.hpp"
 #include <thread>

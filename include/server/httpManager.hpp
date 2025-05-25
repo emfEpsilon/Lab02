@@ -33,11 +33,22 @@ public:
     void start();
     void stop();
 
+    void handleMap(const httplib::Request &req, httplib::Response &res);
+    void handleMaxFlow(const httplib::Request &req, httplib::Response &res);
+    void handleCircuit(const httplib::Request &req, httplib::Response &res);
+    void handleResult(const httplib::Request &req, httplib::Response &res);
+    
+
 private:
     static constexpr const char* ENDPOINT_MAP = "/map";
-    static constexpr const char* ENDPOINT_MAXFLOW = "fullfilment-flow";
-    static constexpr const char* ENDPOINT_CIRCUIT = "/circuit";
+    static constexpr const char* ENDPOINT_MAXFLOW = "/fullfilment-flow";
+    static constexpr const char* ENDPOINT_CIRCUIT = "/fulfillment-circuit";
     static constexpr const char* ENDPOINT_RESULT = "/result";
+
+    static constexpr const int CODE_OK = 200;
+    static constexpr const int CODE_BAD_REQUEST = 400;
+    static constexpr const int CODE_NOT_FOUND = 404;
+    static constexpr const int CODE_INTERNAL_ERROR = 500;
 
     std::string m_ip;
     uint16_t m_port;
@@ -49,7 +60,4 @@ private:
     httplib::Server m_sv;
 
     MongoDatabase& m_mongoDb;
-    
-    MaxFlowCalculator m_maxFlowCalculator;
-    CircuitCalculator m_circuitCalculator;
 };

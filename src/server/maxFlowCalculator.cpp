@@ -26,3 +26,16 @@ MaxFlowCalculator::~MaxFlowCalculator()
 {
     // Destructor implementation
 }
+
+void MaxFlowCalculator::addEdge(int u, int v, int capacity)
+{
+  
+}
+
+
+int MaxFlowCalculator::calculate(int s, int k)
+{
+    int maxFlow = 0;
+    
+    return maxFlow; 
+}

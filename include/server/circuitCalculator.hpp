@@ -17,10 +17,16 @@
  */
 #pragma once
 #include "utils.hpp"
+#include <vector>
 
 class CircuitCalculator
 {
 public:
     CircuitCalculator();
     ~CircuitCalculator();
+    void addEdge(int u, int v);
+    std::vector<int> calculate(int s);
+
+private:
+    std::vector<std::vector<int>> m_M;
 };

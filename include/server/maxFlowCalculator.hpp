@@ -17,10 +17,25 @@
  */
 #pragma once
 #include "utils.hpp"
+#include <vector>
 
+/**
+ * @class MaxFlowCalculator
+ * @brief Class to calculate the maximum flow using the Ford-Fulkerson algorithm
+ */
 class MaxFlowCalculator
 {
 public:
     MaxFlowCalculator();
     ~MaxFlowCalculator();
+    void addEdge(int u, int v, int capacity);
+    /**
+     * @brief Ford-Fulkerson algorithm to find the maximum flow in a flow network
+     * @param s Source node
+     * @param k Sink node
+     */
+    int calculate(int s, int k);
+
+private:
+    std::vector<std::vector<int>> m_M;
 };

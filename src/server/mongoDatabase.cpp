@@ -37,15 +37,15 @@ MongoDatabase::~MongoDatabase()
 
 /**
  * * @brief Insert a map into the MongoDB database
- * * @param bsonBody The BSON document to insert
+ * * @param bsonMap The BSON document to insert
  * * @return The ID of the inserted document
  */
-std::string MongoDatabase::insertMap(const bsoncxx::document::value &bsonBody)
+std::string MongoDatabase::insertMap(const bsoncxx::document::value &bsonMap)
 {
     try
     {
         auto collection = m_client[m_dbName]["maps"];
-        auto result = collection.insert_one(bsonBody.view());
+        auto result = collection.insert_one(bsonMap.view());
         if (result)
         {
             std::string inserted_id = result->inserted_id().get_oid().value.to_string();
@@ -68,6 +68,75 @@ std::shared_ptr<bsoncxx::document::value> MongoDatabase::getMap(const std::strin
         try
         {
             oid = bsoncxx::oid{mapId};
+        }
+        catch (const bsoncxx::exception &e)
+        {
+            std::cerr << "Invalid ObjectId: " << e.what() << std::endl;
+            return nullptr;
+        }
+
+        auto doc = collection.find_one(bsoncxx::builder::stream::document{} << "_id" << oid << bsoncxx::builder::stream::finalize);
+        if (doc)
+        {
+            return std::make_shared<bsoncxx::document::value>(doc.value());
+        }
+    }
+    catch (const mongocxx::exception &e)
+    {
+        std::cerr << "MongoDB get error: " << e.what() << std::endl;
+    }
+    return nullptr;
+}
+
+
+
+std::string MongoDatabase::insertMaxFlowResult(const bsoncxx::builder::stream::document &bsonMaxFlowResult)
+{
+    try
+    {
+        auto collection = m_client[m_dbName]["results"];
+        auto result = collection.insert_one(bsonMaxFlowResult.view());
+        if (result)
+        {
+            std::string inserted_id = result->inserted_id().get_oid().value.to_string();
+            return inserted_id;
+        }
+    }
+    catch (const mongocxx::exception &e)
+    {
+        std::cerr << "MongoDB insert error: " << e.what() << std::endl;
+    }
+    return "";
+}
+
+std::string MongoDatabase::insertCircuitResult(const bsoncxx::builder::stream::document &bsonCircuitResult)
+{
+    try
+    {
+        auto collection = m_client[m_dbName]["results"];
+        auto result = collection.insert_one(bsonCircuitResult.view());
+        if (result)
+        {
+            std::string inserted_id = result->inserted_id().get_oid().value.to_string();
+            return inserted_id;
+        }
+    }
+    catch (const mongocxx::exception &e)
+    {
+        std::cerr << "MongoDB insert error: " << e.what() << std::endl;
+    }
+    return "";
+}
+
+
+std::shared_ptr<bsoncxx::document::value> MongoDatabase::getResult(const std::string &resultId){
+    try
+    {
+        auto collection = m_client[m_dbName]["results"];
+        bsoncxx::oid oid;
+        try
+        {
+            oid = bsoncxx::oid{resultId};
         }
         catch (const bsoncxx::exception &e)
         {

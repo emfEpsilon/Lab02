@@ -25,3 +25,14 @@ CircuitCalculator::~CircuitCalculator()
 {
     // Destructor implementation
 }
+
+void  CircuitCalculator::addEdge(int u, int v)
+{
+}
+
+std::vector<int> CircuitCalculator::calculate(int s)
+{
+    std::vector<int> circuit = {0, 1, 2, 3}; // Placeholder for the circuit calculation result
+    // TODO
+    return circuit;
+}

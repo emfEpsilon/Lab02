@@ -32,12 +32,13 @@ class MongoDatabase
 public:
     MongoDatabase(const std::string &uri, const std::string &dbName);
     ~MongoDatabase();
-    std::string insertMap(const bsoncxx::document::value &bsonBody);
-    std::shared_ptr<bsoncxx::document::value> getMap(const std::string &mapId);
+    std::string insertMap(const bsoncxx::document::value &bsonMap);
+    std::string insertMaxFlowResult(const bsoncxx::builder::stream::document &bsonMaxFlowResult);
+    std::string insertCircuitResult(const bsoncxx::builder::stream::document &bsonCircuitResult);
 
-    // getMap
-    // insertResult
-    // getResult
+    std::shared_ptr<bsoncxx::document::value> getMap(const std::string &mapId);
+    std::shared_ptr<bsoncxx::document::value> getResult(const std::string &resultId);
+
 private:
     mongocxx::instance m_instance; // This should be created only once per application
     mongocxx::client m_client;

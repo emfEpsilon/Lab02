@@ -41,7 +41,7 @@ public:
 
 private:
     static constexpr const char* ENDPOINT_MAP = "/map";
-    static constexpr const char* ENDPOINT_MAXFLOW = "/fullfilment-flow";
+    static constexpr const char* ENDPOINT_MAXFLOW = "/fulfillment-flow";
     static constexpr const char* ENDPOINT_CIRCUIT = "/fulfillment-circuit";
     static constexpr const char* ENDPOINT_RESULT = "/result";
 

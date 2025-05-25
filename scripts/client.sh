@@ -12,7 +12,7 @@ case "$1" in
         fi
         req_body='{"map_id":"'"$2"'","source":"FC001","sink":"FC010"}'
         echo "Sending JSON: $req_body"
-        curl -X POST -H "Content-Type: application/json" -d "$req_body" "0.0.0.0:8080/fullfilment-flow"
+        curl -X POST -H "Content-Type: application/json" -d "$req_body" "0.0.0.0:8080/fulfillment-flow"
         ;;
     circuit)
         if [ -z "$2" ]; then
@@ -21,7 +21,7 @@ case "$1" in
         fi
         req_body='{"map_id":"'"$2"'","start":"FC001"}'
         echo "Sending JSON: $req_body"
-        curl -X POST -H "Content-Type: application/json" -d "$req_body" "0.0.0.0:8080/fullfilment-circuit"
+        curl -X POST -H "Content-Type: application/json" -d "$req_body" "0.0.0.0:8080/fulfillment-circuit"
         ;;
     result)
         if [ -z "$2" ]; then
